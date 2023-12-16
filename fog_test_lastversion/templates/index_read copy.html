@@ -1,0 +1,269 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>雾霾定位探测系统</title>
+<!--添加一个meta标签，以便使页面更好的在移动平台上展示。-->>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Weather Report Widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free web designs for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+<!-- //Custom Theme files -->
+<!-- js -->
+<script src = "../static/js/jquery-2.2.3.min.js"></script> 
+<script src = "../static/js/owl.carousel.js"></script> <!--引入库，下面这个也是用这个库的JavaScript段-->
+<script>
+	$(document).ready(function() {      //通过jQuery库中的函数和插件实现了一个图片轮播效果
+		$("#owl-demo").owlCarousel({ 
+		  autoPlay: 3000, //Set AutoPlay to 3 seconds
+	 
+		  items : 3,
+		  itemsDesktop : [768,3],
+		  itemsDesktopSmall : [414,4]
+	 
+		});
+	 
+	}); 
+</script>
+<script src = "../static/js/echart.js"></script>
+<script src="../static/js/skycons.js"></script>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+<!--web font--><!--上述代码引入了一个名为 Open Sans 的字体，该字体的 URL 地址为 //fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800，该 URL 地址指向 Google 的字体库。-->
+
+<style type="text/css">
+    #cityName {font-size: 40px; color: white ;}
+</style>
+</head>
+
+<body>
+    <!--得到所在城市，<p><span id="cityName"></span></p>-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3PfSKInX6OPBE4N4Ll9rlfE78b9KiYb5"></script>
+    <script type="text/javascript">
+        function myFun(result){
+            var cityName = result.name;
+        
+            document.getElementById("cityName").innerHTML = cityName;
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+    </script>
+
+    <!--上部分中的其它数据-->
+    <script>
+        $.ajax({
+            url: "https://restapi.amap.com/v3/weather/weatherInfo",
+            data: {
+                key: "b2757c3f166a025cf808e4081b3537ba",
+                city: '210200',
+                output: "json"
+            },
+            success: function(data) {
+                var weather = data.lives[0]['weather'];
+                var temperature = data.lives[0]['temperature'];
+                var humidity = data.lives[0]['humidity'];
+                var winddirection = data.lives[0]['winddirection'];
+                var windpower = data.lives[0]['windpower'];
+                document.getElementById("weather_temp").innerHTML = temperature + '­°C';//实时气温
+                document.getElementById("weather_quality").innerHTML = weather;//实时天气
+                document.getElementById("humidity").innerHTML = humidity;
+                document.getElementById("weather_wind_direction").innerHTML = winddirection;
+                document.getElementById("weather_wind_power").innerHTML = windpower;
+            }
+        });
+    </script>
+
+    <!--轮播图数据，和风天气-->
+    <script>        
+        $.get("https://devapi.qweather.com/v7/air/now?location=108,34&key=3e36abc203f8465eaef75758aff9a350", function(param2){
+                            $(".quality").text(param2['now']['category']);      
+                            $(".aq").text(param2['now']['aqi']);
+                            $(".pm25").text(param2['now']['pm2p5']);
+                            $(".so2").text(param2['now']['so2']);
+                            $(".no2").text(param2['now']['no2']);
+                            $(".co").text(param2['now']['co']);
+                            $(".o3").text(param2['now']['o3']);
+
+        },"json")
+    </script>
+
+	
+	<div class="main-agileits">
+        <h1><b>雾霾定位探测系统</b></h1>
+        <!--上部分结构-->
+		<div class="main-wthree-row"> 
+			<div class="agileinfo-text"> <!--finished(date,temp,cityName,weather)-->
+				<div class="date">
+					<!-- Date-JavaScript -->
+					<script type="text/javascript">
+						var mydate=new Date()
+						var year=mydate.getYear()
+						if(year<1000)
+						year+=1900  //getyear返回的数据就是当前年份-1900
+						var day=mydate.getDay()
+						var month=mydate.getMonth()
+						var daym=mydate.getDate()
+						if(daym<10)
+						daym="0"+daym
+						var dayarray=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+						var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December")
+						document.write(""+dayarray[day]+" <br> "+daym+"  "+montharray[month]+"  "+year+"")
+					</script>
+					<!-- //Date-JavaScript -->
+				</div>
+				<h2 id="weather_temp"></h2>
+				<div id="cityName"></div>
+				<h6 id="weather_quality"></h6>
+                
+			</div>
+            <!--轮播图结构-->
+			<div class="w3layouts-slider">
+				<div id="owl-demo" class="owl-carousel owl-theme">
+                    
+                    <div class="item agile-item">
+                        <h6>pm2.5</h6>
+                        <br>
+						<h6 class="pm25" id="pm25"></h6>
+                    </div>   
+                    <div class="item agile-item">
+						<h6>so2</h6>
+                        <br>
+						<h6 class="so2" id="so2"></h6>
+					</div> 
+					<div class="item agile-item">
+						<h6>风向</h6>
+                        <br>
+						<h6 class="weather_wind_direction" id="weather_wind_direction"></h6>
+					</div> 
+					<div class="item agile-item">
+                        <h6>风力</h6>
+                        <br>
+						<h6 class="weather_wind_power" id="weather_wind_power"></h6>
+					</div>  
+					<div class="item agile-item">
+                        <h6>湿度</h6>
+                        <br>
+						<h6 class="humidity" id="humidity"></h6>
+					</div> 
+				</div>
+			</div>
+        </div>
+	   
+        <!--天气折线图结构+数据-->
+        <div id="weather" class="col-lg-7 col-md-12" style="height:400px"></div>
+        <div class="get_weather_info">
+                
+                <script>
+                    // 初始化天气折线图
+                    var weather = echarts.init($('#weather').get(0));
+                    option = {
+                        title: {
+                            text: '未来一周气温',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['最高气温', '最低气温', '湿度']
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: []
+                        },
+                        yAxis: {
+                            scale:true, //纵坐标起始点根据最低值变化
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} °C'
+                            }
+                        },
+                        series: [{
+                                name: '最高气温',
+                                type: 'line',
+                                data: [],
+                                markPoint: {
+                                    data: [{
+                                            type: 'max',
+                                            name: '最大值'
+                                        }
+
+                                    ]
+                                },
+                                markLine: {
+                                    data: [{
+                                        type: 'average',
+                                        name: '平均值'
+                                    }]
+                                }
+                            },
+                            {
+                                name: '最低气温',
+                                type: 'line',
+                                data: [],
+                                markPoint: {
+                                    data: [{
+                                        type: 'min',
+                                        name: '最小值'
+                                    }]
+                                },
+                                markLine: {
+                                    data: [{
+                                            type: 'average',
+                                            name: '平均值'
+                                        },
+
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    weather.setOption(option);
+                    // 获取天气信息
+                    $.get("https://www.tianqiapi.com/free/week?appid=61241524&appsecret=9vZZGUmr",
+                    function (res) {
+                    //显示当前城市
+                        //option.title.subtext ='当前城市：' +res.city//原来有{# #}
+                        //给横坐标复赋值
+                        option.xAxis.data = [res.data[0].date,
+                            res.data[1].date,
+                            res.data[2].date,
+                            res.data[3].date,
+                            res.data[4].date,
+                            res.data[5].date,
+                            res.data[6].date
+                        ]
+                        //由于温度返回的是xx℃ 而我们只需要数字 所以用parseInt截取数字
+                        option.series[0].data = [parseInt(res.data[0].tem_day),
+                            parseInt(res.data[1].tem_day),
+                            parseInt(res.data[2].tem_day),
+                            parseInt(res.data[3].tem_day),
+                            parseInt(res.data[4].tem_day),
+                            parseInt(res.data[5].tem_day),
+                            parseInt(res.data[6].tem_day)]
+
+                        option.series[1].data = [parseInt(res.data[0].tem_night),
+                            parseInt(res.data[1].tem_night),
+                            parseInt(res.data[2].tem_night),
+                            parseInt(res.data[3].tem_night),
+                            parseInt(res.data[4].tem_night),
+                            parseInt(res.data[5].tem_night),
+                            parseInt(res.data[6].tem_night)
+                        ]
+
+                        weather.setOption(option); // 使用刚指定的配置项和数据显示图表。
+                    },
+                    );
+                </script>
+        </div>
+    </div>
+</body>
+</html>
